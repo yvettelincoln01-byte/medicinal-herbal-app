@@ -214,9 +214,37 @@ class HerbalApp:
         with open("favorites.json", 'w') as f:
             json.dump(self.favorites, f, indent=2)
 
+    def display_medical_disclaimer(self) -> str:
+        """Display medical disclaimer before herb information."""
+        disclaimer = [
+            "\n" + "!"*60,
+            "⚠️  IMPORTANT MEDICAL DISCLAIMER ⚠️",
+            "!"*60,
+            "\nThis application is for EDUCATIONAL PURPOSES ONLY.",
+            "It is NOT a substitute for professional medical advice.",
+            "\n✓ CONSULT A DOCTOR OR HEALTHCARE PROFESSIONAL BEFORE:",
+            "  • Using any herbal remedies",
+            "  • Starting any herbal supplement",
+            "  • Combining herbs with prescription medications",
+            "  • Using herbs if you have existing medical conditions",
+            "  • Using herbs during pregnancy or breastfeeding",
+            "\n✓ Herbs can have serious interactions with medications",
+            "✓ Herbs may cause allergic reactions or side effects",
+            "✓ Dosages matter - more is not always better",
+            "✓ Quality and safety vary by source and preparation",
+            "\nDo NOT rely on this app for medical decisions.",
+            "Always seek professional medical guidance.",
+            "!"*60 + "\n",
+        ]
+        return "\n".join(disclaimer)
+
     def display_herb_details(self, herb: Herb) -> str:
-        """Format herb information for display."""
+        """Format herb information for display with warnings."""
         output = []
+        
+        # Add medical disclaimer at top
+        output.append(self.display_medical_disclaimer())
+        
         output.append(f"\n{'='*60}")
         output.append(f"HERB: {herb.name}")
         output.append(f"{'='*60}")
@@ -247,13 +275,36 @@ class HerbalApp:
         
         output.append(f"\nDosage: {herb.dosage}")
         
-        output.append(f"\nContraindications:")
+        # Prominent warnings section
+        output.append(f"\n{'!'*60}")
+        output.append("⚠️  CONTRAINDICATIONS & HEALTH WARNINGS ⚠️")
+        output.append(f"{'!'*60}")
+        output.append("\nDO NOT USE if you have:")
         for contra in herb.contraindications:
-            output.append(f"  ⚠ {contra}")
+            output.append(f"  ⚠️  {contra}")
         
-        output.append(f"\nPotential Interactions:")
+        output.append(f"\n{'!'*60}")
+        output.append("⚠️  MEDICATION & HERB INTERACTIONS ⚠️")
+        output.append(f"{'!'*60}")
+        output.append(f"\nThis herb does NOT work well with:")
         for interaction in herb.interactions:
-            output.append(f"  ⚠ {interaction}")
+            output.append(f"  ⚠️  {interaction}")
+        
+        output.append(f"\nIMPORTANT: If you take ANY of these medications,")
+        output.append(f"CONSULT YOUR DOCTOR before using {herb.name}.")
+        
+        # Final disclaimer
+        output.append(f"\n{'!'*60}")
+        output.append("⚠️  BEFORE YOU USE THIS HERB ⚠️")
+        output.append(f"{'!'*60}")
+        output.append("\n✓ Tell your doctor about ALL herbs you plan to use")
+        output.append("✓ Check for allergies or sensitivities first")
+        output.append("✓ Start with small amounts to test tolerance")
+        output.append("✓ Buy from reputable, quality sources only")
+        output.append("✓ Stop use if you experience any adverse effects")
+        output.append("✓ Never replace medical treatment with herbs alone")
+        output.append("\nYour health and safety are paramount.")
+        output.append("When in doubt, ask a healthcare professional.")
         
         output.append(f"\n{'='*60}\n")
         
@@ -292,7 +343,9 @@ class HerbalApp:
             elif choice == "6":
                 self.add_to_favorites()
             elif choice == "7":
-                print("\nThank you for using Medicinal Herbal App. Stay healthy!")
+                print("\nThank you for using Medicinal Herbal App.")
+                print("Please consult healthcare professionals for medical advice.")
+                print("Stay healthy and safe!")
                 break
             else:
                 print("\nInvalid choice. Please try again.")
@@ -381,11 +434,15 @@ class HerbalApp:
         print("\n" + "="*60)
         print("YOUR FAVORITE HERBS")
         print("="*60)
+        print("\nReminder: Always consult a healthcare professional")
+        print("before using any of these herbs.")
+        print("="*60)
         for herb_name in self.favorites:
             herb = self.db.search_herb(herb_name)
             if herb:
                 print(f"\n• {herb.name} ({herb.scientific_name})")
                 print(f"  Benefits: {', '.join(herb.benefits[:2])}...")
+                print(f"  ⚠️  Interactions: {', '.join(herb.interactions)}")
 
     def add_to_favorites(self) -> None:
         """Add herb to favorites."""
@@ -397,6 +454,7 @@ class HerbalApp:
                 self.favorites.append(herb.name)
                 self.save_favorites()
                 print(f"\n✓ {herb.name} added to favorites!")
+                print("⚠️  Remember to consult a healthcare professional before use.")
             else:
                 print(f"\n{herb.name} is already in your favorites.")
         else:
