@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Welcome to the Medicinal Herbal App</h2>
+
+<div class="info-box">
+    <strong>ℹ️ Getting Started:</strong> Browse our herb database to learn about common medicinal plants, their benefits, preparation methods, and important safety information.
+</div>
+
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search by herb name...">
+    <button onclick="searchHerbs()">Search</button>
+</div>
+
+<h2>Popular Herbs</h2>
+<div class="grid">
+    {% for herb in herbs %}
+    <a href="/herb/{{ herb.name.lower() }}" style="text-decoration: none; color: inherit;">
+        <div class="herb-card">
+            <h3>{{ herb.name }}</h3>
+            <div class="scientific-name">{{ herb.scientific_name }}</div>
+            <div class="family">{{ herb.family }}</div>
+            <p>{{ herb.description }}</p>
+            <div class="benefits-list">
+                {% for benefit in herb.benefits[:2] %}
+                <li>{{ benefit }}</li>
+                {% endfor %}
+                {% if herb.benefits|length > 2 %}
+                <li>... and more</li>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+<script>
+function searchHerbs() {
+    const query = document.getElementById('searchInput').value.trim();
+    if (query) {
+        window.location.href = '/search?q=' + encodeURIComponent(query) + '&type=name';
+    }
+}
+
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        searchHerbs();
+    }
+});
+</script>
+{% endblock %}

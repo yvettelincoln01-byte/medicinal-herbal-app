@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="/" class="back-link">← Back to Home</a>
+
+<h2>{{ herb.name }}</h2>
+<p><strong>Scientific Name:</strong> <em>{{ herb.scientific_name }}</em></p>
+<p><strong>Family:</strong> <span class="family">{{ herb.family }}</span></p>
+
+<div class="warning">
+    <div class="warning-title">⚠️ IMPORTANT: CONSULT YOUR DOCTOR</div>
+    Before using {{ herb.name }}, consult with a healthcare professional, especially if you:
+    <ul style="margin-left: 20px; margin-top: 10px;">
+        <li>Take any medications</li>
+        <li>Have existing health conditions</li>
+        <li>Are pregnant or breastfeeding</li>
+        <li>Have allergies or sensitivities</li>
+    </ul>
+</div>
+
+<h3>Description</h3>
+<p>{{ herb.description }}</p>
+
+<h3>Health Benefits</h3>
+<ul class="benefits-list">
+    {% for benefit in herb.benefits %}
+    <li>{{ benefit }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Active Compounds</h3>
+<ul style="margin-left: 20px;">
+    {% for compound in herb.active_compounds %}
+    <li>{{ compound }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Parts Used</h3>
+<ul style="margin-left: 20px;">
+    {% for part in herb.parts_used %}
+    <li>{{ part }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Traditional Uses</h3>
+<ul style="margin-left: 20px;">
+    {% for use in herb.traditional_uses %}
+    <li>{{ use }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Preparation Methods</h3>
+{% for method, instructions in herb.preparation_methods.items() %}
+<div class="info-box">
+    <strong>{{ method|upper }}:</strong> {{ instructions }}
+</div>
+{% endfor %}
+
+<h3>Recommended Dosage</h3>
+<p><strong>{{ herb.dosage }}</strong></p>
+
+<div class="warning">
+    <div class="warning-title">⚠️ CONTRAINDICATIONS (When NOT to use)</div>
+    <ul style="margin-left: 20px; margin-top: 10px;">
+        {% for contra in herb.contraindications %}
+        <li><strong>{{ contra }}</strong></li>
+        {% endfor %}
+    </ul>
+    <p style="margin-top: 10px;"><strong>If any of these apply to you, DO NOT use this herb without doctor approval.</strong></p>
+</div>
+
+<div class="warning">
+    <div class="warning-title">⚠️ DRUG & MEDICATION INTERACTIONS</div>
+    <p><strong>This herb may interact negatively with:</strong></p>
+    <ul class="interactions-list" style="margin-left: 20px; margin-top: 10px;">
+        {% for interaction in herb.interactions %}
+        <li><strong>{{ interaction }}</strong></li>
+        {% endfor %}
+    </ul>
+    <p style="margin-top: 15px;"><strong style="color: #d32f2f;">If you take any of these medications, CONSULT YOUR DOCTOR before using {{ herb.name }}.</strong></p>
+    <p style="margin-top: 10px;">These interactions could reduce medication effectiveness or cause harmful side effects.</p>
+</div>
+
+<div class="disclaimer">
+    <strong>✓ Safety Checklist Before Use:</strong>
+    <ul style="margin-left: 20px; margin-top: 10px;">
+        <li>☐ Tell your doctor about ALL herbs you plan to use</li>
+        <li>☐ Check for allergies or sensitivities first</li>
+        <li>☐ Start with small amounts to test tolerance</li>
+        <li>☐ Buy from reputable, quality sources only</li>
+        <li>☐ Stop use if you experience any adverse effects</li>
+        <li>☐ Never replace medical treatment with herbs alone</li>
+    </ul>
+</div>
+
+<p style="margin-top: 30px; font-style: italic; color: #666;">
+    <strong>Disclaimer:</strong> This application provides educational information about medicinal herbs. 
+    It is not a substitute for professional medical advice, diagnosis, or treatment. 
+    Always consult with qualified healthcare providers before using any herbal remedies.
+</p>
+{% endblock %}

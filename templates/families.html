@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="/" class="back-link">← Back to Home</a>
+
+<h2>Browse by Plant Family</h2>
+
+<div class="grid">
+    {% for family in families %}
+    <a href="/search?q={{ family|urlencode }}&type=family" style="text-decoration: none; color: inherit;">
+        <div class="herb-card" style="text-align: center;">
+            <h3>{{ family }}</h3>
+            <p>Click to find herbs in this family</p>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

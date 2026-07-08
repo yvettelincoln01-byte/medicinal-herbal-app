@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="/" class="back-link">← Back to Home</a>
+
+<h2>Browse by Health Benefits</h2>
+
+<div class="grid">
+    {% for benefit in benefits %}
+    <a href="/search?q={{ benefit|urlencode }}&type=benefit" style="text-decoration: none; color: inherit;">
+        <div class="herb-card" style="text-align: center;">
+            <h3>{{ benefit }}</h3>
+            <p>Click to find herbs with this benefit</p>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

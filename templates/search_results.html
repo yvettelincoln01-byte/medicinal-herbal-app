@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="/" class="back-link">← Back to Home</a>
+
+<h2>Search Results</h2>
+<p>Found <strong>{{ results|length }}</strong> result(s) for "<strong>{{ query }}</strong>"</p>
+
+{% if results %}
+<div class="grid">
+    {% for herb in results %}
+    <a href="/herb/{{ herb.name.lower() }}" style="text-decoration: none; color: inherit;">
+        <div class="herb-card">
+            <h3>{{ herb.name }}</h3>
+            <div class="scientific-name">{{ herb.scientific_name }}</div>
+            <div class="family">{{ herb.family }}</div>
+            <p>{{ herb.description }}</p>
+            <div class="benefits-list">
+                {% for benefit in herb.benefits[:2] %}
+                <li>{{ benefit }}</li>
+                {% endfor %}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="info-box">
+    <strong>No results found.</strong> Try a different search term or browse by <a href="/benefits">benefit</a> or <a href="/families">plant family</a>.
+</div>
+{% endif %}
+{% endblock %}
